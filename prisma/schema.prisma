@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//yarn prisma migrate dev
+
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String
+  password   String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  meals Meal[]
+
+  @@map("users")
+}
+
+model Meal {
+  id         String    @id @default(uuid())
+  name       String
+  hour       Int
+  minutes    Int
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+  items   Item[]
+
+  @@map("meals")
+}
+
+model Item {
+  id         String    @id @default(uuid())
+  amount     Int
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  meal    Meal   @relation(fields: [meal_id], references: [id])
+  meal_id String
+  food    Food   @relation(fields: [food_id], references: [id])
+  food_id String
+
+  @@map("items")
+}
+
+model Food {
+  id         String    @id @default(uuid())
+  kcal       Float
+  carb       Float
+  prot       Float
+  fat        Float
+  fiber      Float
+  name       String
+  liquid     Boolean   @default(false)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  // category    Category @relation(fields: [category_id], references: [id])
+  // category_id String
+  item Item[]
+
+  @@map("foods")
+}
+
+// model Category {
+//   id         String    @id @default(uuid())
+//   name       String
+//   created_at DateTime? @default(now())
+//   updated_at DateTime? @default(now())
+//   foods      Food[]
+
+//   @@map("categories")
+// }
