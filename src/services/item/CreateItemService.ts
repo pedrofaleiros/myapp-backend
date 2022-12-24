@@ -37,9 +37,14 @@ class CreateItemService {
 				food_id: food_id,
 				meal_id: meal_id,
 			},
-			include: {
+			/* include: {
 				food: true,
 				meal: true,
+			}, */
+			select: {
+				meal_id: true,
+				food_id: true,
+				amount: true,
 			}
 		});
 

@@ -30,8 +30,29 @@ class ListMealItemsService {
 			where: {
 				meal_id: meal_id
 			},
-			include: {
+			/* include: {
 				food: true,
+			}, */
+			select: {
+				id: true,
+				amount: true,
+				food: {
+					select: {
+						id:  true,
+						name: true,
+						kcal: true,
+						carb: true,
+						prot: true,
+						fat: true,
+						fiber: true,
+						liquid: true,
+					}
+				},
+			},
+			orderBy: {
+				food: {
+					name: 'asc'
+				}
 			}
 		});
 

@@ -16,6 +16,11 @@ class SearchFoodService {
 			select: {
 				name: true,
 				kcal: true,
+				carb: true,
+				prot: true,
+				fat: true,
+				fiber: true,
+				liquid: true,
 			},
 			orderBy: {
 				name: 'asc',
@@ -33,6 +38,11 @@ class SearchFoodService {
 				select: {
 					name: true,
 					kcal: true,
+					carb: true,
+					prot: true,
+					fat: true,
+					fiber: true,
+					liquid: true,
 				},
 				orderBy: {
 					name: 'asc',
