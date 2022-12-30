@@ -41,4 +41,6 @@ router.put('/item', isAuthenticaded, new UpdateItemController().handle);
 router.get('/meal/items', isAuthenticaded, new ListMealItemsController().handle);
 router.delete('/item', isAuthenticaded, new DeleteItemController().handle);
 
+router.get('/', (req, res)=> res.json({status: 'OK'}))
+
 export { router };
