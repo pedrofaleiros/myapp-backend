@@ -2,6 +2,7 @@ import repository from "../../prisma";
 import { MealValidator } from "../../validators/meal/MealValidator";
 
 interface MealRequest {
+	name: string,
 	hour: number;
 	minutes: number;
 	meal_id: string;
@@ -10,14 +11,21 @@ interface MealRequest {
 
 class UpdateMealService {
 
-	async execute({ hour, minutes, meal_id, user_id }: MealRequest) {
+	async execute({ name, hour, minutes, meal_id, user_id }: MealRequest) {
 
 		hour = Math.round(hour);
 		minutes = Math.round(minutes);
 
+
 		//validate
 		const validator = new MealValidator();
 		const validHour = await validator.validateHour(hour, minutes);
+		await validator.validate({
+			name,
+			hour,
+			minutes
+		});
+
 
 		if (!validHour) {
 			throw new Error('Horario invalido');
@@ -33,22 +41,28 @@ class UpdateMealService {
 			}
 		});
 
-		if (mealUserId.user_id !== user_id) {
+
+		if (mealUserId.user_id != user_id) {
 			throw new Error('Nao autorizado');
 		}
 
-		const meal = await repository.meal.update({
-			where: {
-				id: meal_id
-			},
-			data: {
-				hour: hour,
-				minutes: minutes,
-			}
-		});
-
-		return meal;
+		try {
+			const meal = await repository.meal.update({
+				where: {
+					id: meal_id
+				},
+				data: {
+					name: name,
+					hour: hour,
+					minutes: minutes,
+				}
+			});
+			return meal;
+		} catch (error) {
+			throw new Error('Dados invalidos');
+		}
 	}
 }
 
 export { UpdateMealService }
+

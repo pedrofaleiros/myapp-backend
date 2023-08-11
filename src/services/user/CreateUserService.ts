@@ -15,6 +15,10 @@ class CreateUserService {
 		if(password.length < 8){
 			throw new Error('Senha invalida');
 		}
+
+		if(name.split(' ').length > 1){
+			throw new Error('Username invalido');
+		}
 		//verificar
 
 		const userEmailExists = await repository.user.findFirst({
@@ -27,6 +31,18 @@ class CreateUserService {
 
 		if (userEmailExists) {
 			throw new Error('Email ja cadastrado');
+		}
+		
+		const userNameExists = await repository.user.findFirst({
+			where: {
+				name: {
+					equals: name
+				}
+			}
+		});
+
+		if (userNameExists) {
+			throw new Error('Username ja cadastrado');
 		}
 
 		const hashPassword = await hash(password, 8);

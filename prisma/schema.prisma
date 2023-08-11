@@ -66,19 +66,7 @@ model Food {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  // category    Category @relation(fields: [category_id], references: [id])
-  // category_id String
   item Item[]
 
   @@map("foods")
 }
-
-// model Category {
-//   id         String    @id @default(uuid())
-//   name       String
-//   created_at DateTime? @default(now())
-//   updated_at DateTime? @default(now())
-//   foods      Food[]
-
-//   @@map("categories")
-// }

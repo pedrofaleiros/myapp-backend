@@ -14,6 +14,7 @@ class SearchFoodService {
 				}
 			},
 			select: {
+				id: true,
 				name: true,
 				kcal: true,
 				carb: true,
@@ -36,6 +37,7 @@ class SearchFoodService {
 					}
 				},
 				select: {
+					id: true,
 					name: true,
 					kcal: true,
 					carb: true,
