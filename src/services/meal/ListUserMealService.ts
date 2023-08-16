@@ -21,11 +21,11 @@ class ListUserMealService {
 						amount: true,
 						food: true,
 					},
-					orderBy: {
-						food: {
-							name: 'asc'
-						}
-					}
+					// orderBy: {
+					// 	food: {
+					// 		name: 'asc'
+					// 	}
+					// }
 				}
 			},
 			orderBy: [
