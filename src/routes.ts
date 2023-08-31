@@ -20,7 +20,7 @@ import { AuthUserbyNameController } from "./controllers/user/AuthUserbyNameContr
 const router = Router();
 
 router.post('/user', new CreateUserController().handle);
-router.post('/session', new AuthUserController().handle);
+// router.post('/session', new AuthUserController().handle);
 // nova
 router.post('/session-name', new AuthUserbyNameController().handle);
 router.get('/me', isAuthenticaded, new DetailUserController().handle);

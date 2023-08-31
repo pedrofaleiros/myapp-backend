@@ -6,10 +6,20 @@ class SearchFoodService {
 
 		const [firstName,] = name.split(' ');
 
-		var foods = await repository.food.findMany({
+		var foods = await this.getFoodsByName(name);
+
+		if (foods.length == 0) {
+			foods = await this.getFoodsByName(firstName);
+		}
+
+		return foods;
+	}
+
+	private async getFoodsByName(text: string) {
+		return await repository.food.findMany({
 			where: {
 				name: {
-					contains: name,
+					contains: text,
 					mode: 'insensitive'
 				}
 			},
@@ -27,32 +37,6 @@ class SearchFoodService {
 				name: 'asc',
 			}
 		});
-
-		if (foods.length == 0) {
-			foods = await repository.food.findMany({
-				where: {
-					name: {
-						contains: firstName,
-						mode: 'insensitive'
-					}
-				},
-				select: {
-					id: true,
-					name: true,
-					kcal: true,
-					carb: true,
-					prot: true,
-					fat: true,
-					fiber: true,
-					liquid: true,
-				},
-				orderBy: {
-					name: 'asc',
-				}
-			});
-		}
-
-		return foods;
 	}
 }
 

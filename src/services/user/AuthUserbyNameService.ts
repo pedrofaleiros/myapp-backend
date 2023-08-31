@@ -8,28 +8,23 @@ class AuthUserbyNameService {
 	async execute({ name, password }: AuthUserbyNameRequest) {
 
 		if (!name) {
-			throw new Error('username invalido');
+			throw new Error('Requisição invalida');
 		}
 
-		const user = await repository.user.findFirst({
-			where: {
-				name: {
-					equals: name
-				}
-			}
-		});
+		const user = await this.getUser(name);
+		await this.verifyPasswordMatch(password, user.password);
 
-		if (!user) {
-			throw new Error('username nao cadastrado');
+		const token = this.getToken(user);
+		return {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			token: token,
 		}
+	}
 
-		const passwordMatch = await compare(password, user.password);
-
-		if (!passwordMatch) {
-			throw new Error('senha invalida');
-		}
-
-		const token = sign(
+	private getToken(user: { id: string, name: string, email: string }) {
+		return sign(
 			{
 				name: user.name,
 				email: user.email,
@@ -40,13 +35,27 @@ class AuthUserbyNameService {
 				expiresIn: '30d'
 			}
 		);
+	}
 
-		return {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			token: token,
+	private async verifyPasswordMatch(password: string, userPassword: string) {
+		const passwordMatch = await compare(password, userPassword);
+		if (!passwordMatch) {
+			throw new Error('Senha invalida');
 		}
+	}
+
+	private async getUser(name: string) {
+		const user = await repository.user.findFirst({
+			where: {
+				name: {
+					equals: name
+				}
+			}
+		});
+		if (!user) {
+			throw new Error('Username nao cadastrado');
+		}
+		return user;
 	}
 }
 

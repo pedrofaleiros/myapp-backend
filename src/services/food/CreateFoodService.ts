@@ -1,44 +1,51 @@
+import { FoodModel } from "../../models/FoodModel";
 import repository from "../../prisma";
-
-interface FoodRequest {
-	name: string;
-
-	kcal: number;
-	carb: number;
-	prot: number;
-	fat: number;
-	fiber: number;
-
-	liquid: boolean;
-}
 
 class CreateFoodService {
 
-	async execute({
-		name, kcal, carb, prot, fat, fiber, liquid
-	}: FoodRequest) {
+	async execute(newFood: FoodModel) {
 
-		//validate
+		this.validateFood(newFood);
 
-		//validate
+		const food = await this.createFood(newFood);
 
-		const food = await repository.food.create({
+		return food;
+	}
+
+	private async createFood(food: FoodModel) {
+		return await repository.food.create({
 			data: {
-				name: name,
-				kcal: kcal,
-				carb: carb,
-				prot: prot,
-				fat: fat,
-				fiber: fiber,
-				liquid: liquid,
+				name: food.name,
+				kcal: food.kcal,
+				carb: food.carb,
+				prot: food.prot,
+				fat: food.fat,
+				fiber: food.fiber,
+				liquid: food.liquid,
 			},
 			select: {
 				id: true,
 				name: true,
 			}
 		});
+	}
 
-		return food;
+	private validateFood(food: FoodModel) {
+
+		if (food.name.length > 30 || food.name.length < 2) {
+			throw new Error('Nome invalido');
+		}
+
+		if (food.kcal < 0) {
+			throw new Error('Kcal invalidas');
+		}
+		if (food.carb < 0 || food.prot < 0 || food.fat < 0 || food.fiber < 0) {
+			throw new Error('Quantidades invalidas');
+		}
+		if (food.fiber > food.carb) {
+			throw new Error('A qtd de fibras não pode ser maior que a de carboidratos.');
+		}
+
 	}
 }
 

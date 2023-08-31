@@ -23,6 +23,13 @@ class DeleteMealService {
 			throw new Error('Nao autorizado');
 		}
 
+		await repository.item.deleteMany({
+			where: {
+				meal_id: meal_id
+			}
+		});
+
+		// Agora você pode deletar a refeição
 		const meal = await repository.meal.delete({
 			where: {
 				id: meal_id

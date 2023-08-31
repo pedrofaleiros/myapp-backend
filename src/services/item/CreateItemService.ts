@@ -23,6 +23,19 @@ class CreateItemService {
 			}
 		});
 
+		const food = await repository.food.findFirst({
+			where: {
+				id: food_id
+			},
+			select: {
+				id: true
+			}
+		});
+
+		if(!food) {
+			throw new Error('Alimento invalido');
+		}
+
 		if(!meal){
 			throw new Error('Refeicao invalida');
 		}
@@ -37,15 +50,16 @@ class CreateItemService {
 				food_id: food_id,
 				meal_id: meal_id,
 			},
-			/* include: {
+			include: {
 				food: true,
-				meal: true,
-			}, */
-			select: {
-				meal_id: true,
-				food_id: true,
-				amount: true,
-			}
+				// meal: true,
+			},
+			// select: {
+			// 	id: true,
+			// 	meal_id: true,
+			// 	food_id: true,
+			// 	amount: true,
+			// }
 		});
 
 		return item;
