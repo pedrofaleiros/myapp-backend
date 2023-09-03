@@ -26,6 +26,12 @@ class CreateFoodService {
 			select: {
 				id: true,
 				name: true,
+				kcal: true,
+				carb: true,
+				prot: true,
+				fat: true,
+				fiber: true,
+				liquid: true,
 			}
 		});
 	}
