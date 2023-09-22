@@ -32,15 +32,15 @@ class UpdateItemService {
 			}
 		});
 
-		if(!user){
+		if (!user) {
 			throw new Error('Refeicao invalida');
 		}
 
-		if(user.user_id !== user_id){
+		if (user.user_id !== user_id) {
 			throw new Error('Nao autorizado');
 		}
 
-		if(amount > 10000 || amount < 0){
+		if (amount > 10000 || amount < 0) {
 			throw new Error('Quantidade invalida');
 		}
 
@@ -50,6 +50,10 @@ class UpdateItemService {
 			},
 			data: {
 				amount: amount,
+			},
+			include: {
+				food: true,
+				// meal: true,
 			}
 		});
 

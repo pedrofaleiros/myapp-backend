@@ -31,6 +31,13 @@ router.get('/meal', isAuthenticaded, new ListUserMealController().handle);
 router.put('/meal', isAuthenticaded, new UpdateMealController().handle);
 router.delete('/meal', isAuthenticaded, new DeleteMealController().handle);
 
+//---------------------------- TODO
+//goals
+// router.post('/goal', isAuthenticaded, new CreateMealController().handle);
+// router.get('/goal', isAuthenticaded, new ListUserMealController().handle);
+// router.put('/goal', isAuthenticaded, new UpdateMealController().handle);
+// router.delete('/goal', isAuthenticaded, new DeleteMealController().handle);
+
 //food
 router.post('/food', isAuthenticaded, new CreateFoodController().handle);
 router.get('/food', isAuthenticaded ,new ListFoodController().handle);
