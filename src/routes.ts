@@ -40,7 +40,7 @@ router.delete('/meal', isAuthenticaded, new DeleteMealController().handle);
 
 //food
 router.post('/food', isAuthenticaded, new CreateFoodController().handle);
-router.get('/food', isAuthenticaded ,new ListFoodController().handle);
+router.get('/food' ,new ListFoodController().handle);
 router.delete('/food', isAuthenticaded, new DeleteFoodController().handle);
 router.get('/food/search', isAuthenticaded, new SearchFoodController().handle);
 
