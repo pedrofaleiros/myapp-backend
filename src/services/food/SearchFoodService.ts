@@ -20,7 +20,7 @@ class SearchFoodService {
 			where: {
 				name: {
 					contains: text,
-					mode: 'insensitive'
+					// mode: 'insensitive'
 				}
 			},
 			select: {
