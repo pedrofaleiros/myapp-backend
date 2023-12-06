@@ -4,7 +4,7 @@ import { router } from "./routes";
 import cors from 'cors';
 
 // const PORT = 3333;
-const PORT = process.argv[process.argv.length - 1] || 3333;
+const PORT = 3333;
 
 const app = express();
 
