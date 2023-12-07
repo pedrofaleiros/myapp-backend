@@ -2,16 +2,16 @@
 services:
   db:
     image: postgres
-    container_name: db
     ports:
       - 5432:5432
     restart: always
-    volumes:
-      - db-volume:/var/lib/postgresql/data
+    hostname: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: dieta
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+    volumes:
+      - database-dieta:/var/lib/postgresql/data
     secrets:
       - db-password
 
@@ -26,12 +26,11 @@ services:
     ports:
       - 3333:3333
     environment:
-      # NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
 
 volumes:
-  db-volume:
+  database-dieta:
 secrets:
   db-password:
     file: db/password.txt
