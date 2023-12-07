@@ -2,28 +2,36 @@
 services:
   db:
     image: postgres
+    container_name: db
     ports:
       - 5432:5432
     restart: always
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-volume:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: dieta
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
     secrets:
       - db-password
-  # server:
-  #   build:
-  #     context: .
-  #   environment:
-  #     NODE_ENV: production
-  #     DATABASE_URL: ${DATABASE_URL}
-  #     JWT_SECRET: ${JWT_SECRET}
-  #   ports:
-  #     - 3333:3333
+
+  server:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 3333:3333
+    environment:
+      # NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+
 volumes:
-  db-data:
+  db-volume:
 secrets:
   db-password:
     file: db/password.txt
